@@ -81,8 +81,14 @@ export const HealthProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     return localStorage.getItem('isAuthenticated') === 'true';
   });
   const [apiKey, setApiKey] = useState<string>(() => {
-    return localStorage.getItem('apiKey') || '';
+  if (typeof window !== 'undefined') {
+    return localStorage.getItem('apiKey') || import.meta.env.VITE_API_KEY || '';
+  }
+  return import.meta.env.VITE_API_KEY || '';
   });
+  /*const [apiKey, setApiKey] = useState<string>(() => {
+    return localStorage.getItem('apiKey') || '';
+  });*/
   useEffect(() => {
     localStorage.setItem('apiKey', apiKey);
   }, [apiKey]);
